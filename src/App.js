@@ -5,7 +5,7 @@ function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredData, setFilteredData] = useState([]);
   const ref = useRef(null);
-
+  var lettersRegex = /^[A-Za-z]+$/;
   var options = [
     { value: "Apple", innerText: "🍎 Apple" },
     { value: "Apple", innerText: "🍌 Banana" },
@@ -15,6 +15,9 @@ function App() {
   useEffect(() => {
     setFilteredData(options);
     ref.current.focus();
+    document
+      .getElementById("select")
+      .addEventListener("keydown", function (e) {});
   }, []);
 
   useEffect(() => {
@@ -30,14 +33,14 @@ function App() {
   const handleInputChange = (event) => {
     if (event.key == "Backspace") {
       setSearchQuery(searchQuery.substring(0, searchQuery.length - 1));
-    } else {
+    } else if (event.key.length == 1 && event.key.match(lettersRegex)) {
       setSearchQuery(searchQuery + event.key);
     }
   };
 
   return (
     <div className="App" ref={ref} tabIndex={-1} onKeyUp={handleInputChange}>
-      <select className="mySelect">
+      <select id="select" className="mySelect">
         <option selected disabled hidden>
           {searchQuery == "" ? "Choose a Fruit" : searchQuery}
         </option>
